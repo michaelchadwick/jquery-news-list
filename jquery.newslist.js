@@ -62,11 +62,11 @@
   // initialize all components and start item cycle
   $.init = function(container, options) {
 
-		var $itemsDiv, $items, $controlsDiv, $controls;
-		var defaults, settings, cycleOps = [];
-		var i;
-		   
-		// create default options
+    var $itemsDiv, $items, $controlsDiv, $controls;
+    var defaults, settings, cycleOps = [];
+    var i;
+    
+    // create default options
     defaults = {
       'itemsDiv'       	: '.items',
       'item'           	: '.item',
@@ -75,7 +75,7 @@
       'hoverClass'     	: 'on', 
       'cycleSpeed'     	: 10000,
       'fadeSpeed'      	: 1000,
-      'maxLoops'       	: null,      
+      'maxLoops'       	: null,
       'leadZero'       	: false
     };
 
@@ -88,11 +88,11 @@
     $items = $(container).find(settings.item); // grab all items
     $controlsDiv = $(container).find(settings.controlsDiv); // grab div with control links
     
-		cycleOps = {
-			'init'				  	: 1,
-			'cur'							: 1,
-			'total'						: settings.maxLoops * $items.length-1
-		};
+    cycleOps = {
+      'init'				  	: 1,
+      'cur'							: 1,
+      'total'						: settings.maxLoops * $items.length-1
+    };
   
     // attach ids to all items
     i = 1;
@@ -113,7 +113,7 @@
         
     // attach click event to all control links
     $controls.click(function(e) {
-	  	e.preventDefault();
+      e.preventDefault();
       changeItemTo(settings, $items, $controls, $(this));
     });
         
@@ -124,15 +124,15 @@
     );
         
     // load first news item
-		loadFirstItem(settings, $items, $controls, $itemsDiv);
+    loadFirstItem(settings, $items, $controls, $itemsDiv);
     
     // start the cycle of items
-		setIntervalID = setInterval(
-			function() {
-				cycleItems(settings, cycleOps, $items, $controls);
-			}, 
-			settings.cycleSpeed;
-		);
+    setIntervalID = setInterval(
+      function() {
+        cycleItems(settings, cycleOps, $items, $controls);
+      }, 
+      settings.cycleSpeed
+    );
 
   };
 
@@ -140,15 +140,15 @@
   /* Item slideshow functions */
   /****************************/
 
-	// initial load
-	function loadFirstItem(settings, $items, $controls, $itemsDiv) {
-		
-		$items.hide();
+  // initial load
+  function loadFirstItem(settings, $items, $controls, $itemsDiv) {
+
+    $items.hide();
     $items.eq(0).fadeIn(settings.fadeSpeed);
     $controls.eq(0).addClass("current");
     $itemsDiv.css("overflow", "hidden");
-	
-	}
+    
+  }
 
   // manual: click control link to change item; interrupts auto
   function changeItemTo(settings, $items, $controls, link) {
@@ -165,30 +165,30 @@
   // auto: cycle items
   function cycleItems(settings, cycleOps, $items, $controls) {
 
-		var nextItemId;
+    var nextItemId;
 
     if ( ((cycleOps.cur <= cycleOps.total) || (settings.maxLoops == null)) && settings.cycler ) {
       nextItemId = cycleOps.init + 1;
 
       if (nextItemId > $items.length) {              
         nextItemId = 1;
-				cycleOps.init = 0;
+        cycleOps.init = 0;
       }
-			
-			// hide all items, and then show next item in list
+      
+      // hide all items, and then show next item in list
       $items.hide();
       $items.filter("#item" + nextItemId).fadeIn(settings.fadeSpeed);
 
       // remove highlight of all controls and then add it to the next control in list
       $controls.removeClass("current");
       $controls.filter("#control" + nextItemId).addClass("current");
-			
-			cycleOps.init++;
-			cycleOps.cur++;
+      
+      cycleOps.init++;
+      cycleOps.cur++;
     } else {
-			clearInterval(setIntervalID);
-		}
+      clearInterval(setIntervalID);
+    }
   
-	}
+  }
 
 })(jQuery);
